@@ -11,9 +11,12 @@
 from typing import List
 
 nums = [1, 2, 3, 7, 11, 15]
+#nums =[2, 7 , 11, 15]
+#nums = [1, 2, 7]
+#nums = [-3, 4, 3, 90] 
 target = 9
 
-# solution 1
+# solution 1  ( O(n^2) )
 class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
         numsLen = len(nums)
@@ -27,3 +30,22 @@ class Solution:
 
 sol = Solution()
 print(sol.twoSum(nums, target))
+
+# solution 2 ( O(n) )
+class Solution1:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        numsLen = len(nums)
+        # temporay dic to store key-value pair: 
+        # key is difference betweem target and nums[index];
+        # value is index of element in nums
+        indexList = {}
+        for i in range(numsLen):
+            difference = target - nums[i]
+            if nums[i] in indexList :
+                return [indexList[nums[i]], i]
+            else :
+                indexList[difference] = i
+        return [-1, -1]
+
+sol1 = Solution1()
+print(sol1.twoSum(nums, target))
