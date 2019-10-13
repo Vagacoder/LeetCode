@@ -29,9 +29,6 @@ class Solution1:
             isGoodPrefix = True
             for i in range(0, lengthOfFirstStr):
                 currentPrefix = strs[0][0:(i+1)]
-                # print(strs[0])
-                # print(strs[0][0:0])
-                # print(strs[0][0:1])
                 print(currentPrefix)
                 for j in range(1, lengthOfStrs):
                     if (not strs[j].startswith(currentPrefix)):
