@@ -26,12 +26,52 @@
 # Input: "{[]}"
 # Output: true
 
-# Solution 1
+# Solution 1 useing stack
+
 class Solution1:
     def isValid(self, s: str) -> bool:
-        
-        return True
+        stack = []
+
+        for i in range(0, len(s)):
+            lastIndexOfStack = len(stack)-1
+            if (s[i] == ')'):
+                if(lastIndexOfStack >=0 and stack[lastIndexOfStack] == '('):
+                    stack.pop(lastIndexOfStack)
+                else:
+                    stack.append(s[i])
+            elif (s[i] == '}'):
+                if(lastIndexOfStack >=0 and stack[lastIndexOfStack] == '{'):
+                    stack.pop(lastIndexOfStack)
+                else:
+                    stack.append(s[i])
+            elif (s[i] == ']'):
+                if(lastIndexOfStack >=0 and stack[lastIndexOfStack] == '['):
+                    stack.pop(lastIndexOfStack)
+                else:
+                    stack.append(s[i])
+            else:
+                stack.append(s[i])
+
+        if (len(stack) == 0):
+            return True
+        else:
+            return False
 
 
-sol = Solution1()
-print(sol.isValid("()"))
+# Solution 2
+class Solution2:
+    def isValid(self, s: str) -> bool:
+        while "()" in s or "{}" in s or '[]' in s:
+            s = s.replace("()", "").replace('{}', "").replace('[]', "")
+        return s == ''
+
+
+sol = Solution2()
+
+print("Input is '()', expected is True, mine is: ",sol.isValid("()"))
+print("Input is '()[]{}', expected is True, mine is: ",sol.isValid("()[]{}"))
+print("Input is '(]', expected is False, mine is: ",sol.isValid("(]"))
+print("Input is '{[]}', expected is True, mine is: ",sol.isValid("{[]}"))
+print("Input is '', expected is True, mine is: ",sol.isValid(""))
+print("Input is '(', expected is False, mine is: ",sol.isValid("("))
+print("Input is ')', expected is False, mine is: ",sol.isValid(")"))
