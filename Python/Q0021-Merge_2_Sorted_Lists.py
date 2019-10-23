@@ -65,13 +65,40 @@ class Solution1:
 
         return root
 
-sol = Solution1()
+# Solution 2, recursove way, super awesome
+class Solution2:
+    def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
+        # check special cases
+        if (l1 == None):
+                return l2
+        if (l2 == None):
+                return l1
+        
+        # normal case
+        cur1 = l1
+        cur2 = l2
 
-# l1_1 = ListNode(1)
-# l1_2 = ListNode(2)
-# l1_3 = ListNode(4)
-# l1_1.next = l1_2
-# l1_2.next = l1_3
+        # determine root
+        if(cur1.val> cur2.val):
+            root = cur2
+            cur2.next = self.mergeTwoLists(cur1, cur2.next)
+        else :
+            root = cur1
+            cur1.next =self.mergeTwoLists(cur1.next, cur2)
+        
+        return root
+
+ 
+
+
+sol = Solution2()
+
+l1_1 = ListNode(1)
+l1_2 = ListNode(2)
+l1_3 = ListNode(4)
+l1_1.next = l1_2
+l1_2.next = l1_3
+
 
 l2_1 = ListNode(1)
 l2_2 = ListNode(3)
@@ -79,7 +106,7 @@ l2_3 = ListNode(4)
 l2_1.next = l2_2
 l2_2.next = l2_3
 
-l1_1 = None
+# l1_1 = None
 # l2_1 = None
 
 print("test1, expect 1, 1, 2 ,3, 4, 4, mine is: ")
