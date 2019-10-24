@@ -41,8 +41,24 @@ class Solution1:
 
         return result
 
+# Solution 2, horizontal scanning, 
+class Solution2:
+    def longestCommonPrefix(self, strs: [str]) -> str:
+        if (len(strs) == 0): return ""
+        result = strs[0]
 
-sol=Solution1()
+        for i in range(1, len(strs)):
+            while (not (strs[i].startswith(result))):
+                result = result[0: len(result)-1]
+                if (result == ""):
+                    return result
+        
+        return result
+
+
+
+sol=Solution2()
 print('Input is ["flower","flow","flight"], expect: "fl", mine is: ',sol.longestCommonPrefix(['flower', 'flow', 'flight']));
 print('Input is ["c","c","c"], expect: "c", mine is: ',sol.longestCommonPrefix(['c', 'c', 'c']));
 print('Input is ["dog","racecar","car"], expect: "", mine is: ',sol.longestCommonPrefix(["dog","racecar","car"]));
+print('Input is ["c","acc","ccc"], expect: "", mine is: ',sol.longestCommonPrefix(["c","acc","ccc"]));

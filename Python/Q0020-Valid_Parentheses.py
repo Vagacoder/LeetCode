@@ -58,15 +58,32 @@ class Solution1:
             return False
 
 
-# Solution 2
+# Solution 2 
 class Solution2:
     def isValid(self, s: str) -> bool:
         while "()" in s or "{}" in s or '[]' in s:
             s = s.replace("()", "").replace('{}', "").replace('[]', "")
         return s == ''
 
+# Solution 3 using map, this one is faster
+class Solution3:
+    def isValid(self, s: str) -> bool:
+        map = {"(": ")", "[": "]", "{": "}"}
+        openSet = {"(", "[", "{"}
+        stack = []
 
-sol = Solution2()
+        for i in s:
+            if i in openSet:
+                stack.append(i)
+            elif stack and i==map[stack[-1]]:
+                stack.pop()
+            else:
+                return False
+        
+        return stack == []
+
+
+sol = Solution3()
 
 print("Input is '()', expected is True, mine is: ",sol.isValid("()"))
 print("Input is '()[]{}', expected is True, mine is: ",sol.isValid("()[]{}"))
@@ -75,3 +92,4 @@ print("Input is '{[]}', expected is True, mine is: ",sol.isValid("{[]}"))
 print("Input is '', expected is True, mine is: ",sol.isValid(""))
 print("Input is '(', expected is False, mine is: ",sol.isValid("("))
 print("Input is ')', expected is False, mine is: ",sol.isValid(")"))
+
