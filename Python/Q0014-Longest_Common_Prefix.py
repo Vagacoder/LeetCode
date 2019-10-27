@@ -44,7 +44,7 @@ class Solution1:
 # Solution 2, horizontal scanning, 
 class Solution2:
     def longestCommonPrefix(self, strs: [str]) -> str:
-        if (len(strs) == 0): return ""
+        if (strs == None or len(strs) == 0): return ""
         result = strs[0]
 
         for i in range(1, len(strs)):
@@ -56,8 +56,48 @@ class Solution2:
         return result
 
 
+# Solution 3 Vertical scanning
+class Solution3:
+    def longestCommonPrefix(self, strs: [str]) -> str:
+        result = ""
+        if (strs == None or len(strs) == 0):
+            return result
+        
+        for i in range(0, len(strs[0])):
+            c = strs[0][i]
+            for j in range(1, len(strs)):
+                if (i == len(strs[j]) or strs[j][i] != c):
+                    return strs[0][0:i]
 
-sol=Solution2()
+        return strs[0]
+
+import math
+# Solution 4 Divide and conquer
+class Solution4:
+    def longestCommonPrefix(self, strs: [str]) -> str:
+        result = ""
+        if (strs == None or len(strs) == 0):
+            return result
+        return self.findLongestCommonPrefix(strs, 0, len(strs) -1)
+
+    def findLongestCommonPrefix(self, strs: [str], l: int, r: int) -> str:
+        if (l == r) :
+            return strs[l]
+        else:
+            mid = (l+r)//2
+            lcpLeft = self.findLongestCommonPrefix(strs, l, mid)
+            lcpRight = self.findLongestCommonPrefix(strs, mid+1, r);
+            return self.commonPrefix(lcpLeft, lcpRight)
+
+    def commonPrefix(self, left: str, right: str)->str:
+        minLen = min(len(left), len(right))
+        for i in range(0, minLen):
+            if (left[i] != right[i]):
+                return left[0:i]
+        return left[0: minLen]
+
+
+sol=Solution4()
 print('Input is ["flower","flow","flight"], expect: "fl", mine is: ',sol.longestCommonPrefix(['flower', 'flow', 'flight']));
 print('Input is ["c","c","c"], expect: "c", mine is: ',sol.longestCommonPrefix(['c', 'c', 'c']));
 print('Input is ["dog","racecar","car"], expect: "", mine is: ',sol.longestCommonPrefix(["dog","racecar","car"]));
