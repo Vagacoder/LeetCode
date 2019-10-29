@@ -71,7 +71,6 @@ class Solution3:
 
         return strs[0]
 
-import math
 # Solution 4 Divide and conquer
 class Solution4:
     def longestCommonPrefix(self, strs: [str]) -> str:
@@ -96,8 +95,34 @@ class Solution4:
                 return left[0:i]
         return left[0: minLen]
 
+# Solution 5 binary search
+class Solution5:
+    def longestCommonPrefix(self, strs:[str]) -> str:
+        result = ""
+        if (strs == None or len(strs) == 0):
+            return result
+        minLen : int = len(strs[0])
+        for str in strs:
+            minLen = min(minLen, len(str));
+        low = 1;
+        high = minLen
+        while (low <= high):
+            mid = (low + high) // 2
+            if (self.isCommonPrefix(strs, mid)):
+                low = mid + 1
+            else:
+                high = mid - 1
+        return strs[0][0: (low + high)//2]
 
-sol=Solution4()
+    def isCommonPrefix(self, s: [str], length: int) -> bool:
+        str1 = s[0][0: length]
+        for j in range(1, len(s)):
+            if (not s[j].startswith(str1)):
+                return False
+        return True
+
+
+sol=Solution5()
 print('Input is ["flower","flow","flight"], expect: "fl", mine is: ',sol.longestCommonPrefix(['flower', 'flow', 'flight']));
 print('Input is ["c","c","c"], expect: "c", mine is: ',sol.longestCommonPrefix(['c', 'c', 'c']));
 print('Input is ["dog","racecar","car"], expect: "", mine is: ',sol.longestCommonPrefix(["dog","racecar","car"]));
