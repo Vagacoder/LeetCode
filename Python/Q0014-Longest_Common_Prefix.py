@@ -121,6 +121,19 @@ class Solution5:
                 return False
         return True
 
+# Solution 6 using Trie
+class Solution6:
+    def longestCommonPrefix(self, strs:[str]) -> str:
+
+        return ""
+
+class TrieNode:
+    links: [TireNode] = None
+    R = 26
+
+class Trie:
+    root: TrieNode = None
+
 
 sol=Solution5()
 print('Input is ["flower","flow","flight"], expect: "fl", mine is: ',sol.longestCommonPrefix(['flower', 'flow', 'flight']));
