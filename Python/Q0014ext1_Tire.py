@@ -29,7 +29,7 @@ class Trie:
         return ord(char)-ord('a')
 
     # TODO: implement these  methods
-
+    # insert word
     def insert(self, key: str) -> None:
         cur: TrieNode = self.root
         length = len(key)
@@ -46,21 +46,37 @@ class Trie:
     def delete(self, key: str) -> bool:
         return False
 
-    def printTrie(self) -> str:
-        return ""
+    # helper function to print all words in trie, output is already sorted
+    # usage: printSubTrie(rootNode of Trie, empty string"")
+    def printSubTrie(self, startingNode: TrieNode, prevString: str) -> None:
+        cur = startingNode
+
+        if cur.isEndOfWord:
+            print(prevString, '~end')
+
+        for i in range(R):
+            if cur.children[i]:
+                currentChar = chr(i+ord('a'))
+                newString = prevString + currentChar
+                self.printSubTrie(cur.children[i], newString)
 
 
 def main():
 
-    keys = ['the', 'a', 'there', 'anaser', 'any', 'by', 'their']
-    output = ['No found', 'Found']
+    # keys = ['abcdefg']
+    # keys = ['an', 'any']
+    # keys = ['the', 'a', 'there', 'anaser', 'any', 'by', 'their']
+    keys = ['the', 'a', 'banana', 'bye', 'there',
+            'anwser', 'any', 'an', 'by', 'their']
+    # output = ['No found', 'Found']
 
-    trie = Trie()
+    trie: Trie = Trie()
 
     for key in keys:
         trie.insert(key)
 
     # print('{} --- {}'.format("the", output[trie.search("the")]))
+    trie.printSubTrie(trie.root, "")
 
 
 main()
