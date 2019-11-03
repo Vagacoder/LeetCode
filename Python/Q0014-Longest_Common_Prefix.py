@@ -85,7 +85,7 @@ class Solution4:
         else:
             mid = (l+r)//2
             lcpLeft = self.findLongestCommonPrefix(strs, l, mid)
-            lcpRight = self.findLongestCommonPrefix(strs, mid+1, r);
+            lcpRight = self.findLongestCommonPrefix(strs, mid+1, r)
             return self.commonPrefix(lcpLeft, lcpRight)
 
     def commonPrefix(self, left: str, right: str)->str:
@@ -102,9 +102,9 @@ class Solution5:
         if (strs == None or len(strs) == 0):
             return result
         minLen : int = len(strs[0])
-        for str in strs:
-            minLen = min(minLen, len(str));
-        low = 1;
+        for str1 in strs:
+            minLen = min(minLen, len(str1))
+        low = 1
         high = minLen
         while (low <= high):
             mid = (low + high) // 2
@@ -127,16 +127,25 @@ class Solution6:
 
         return ""
 
+R = 26
+
 class TrieNode:
-    links: [TireNode] = None
-    R = 26
+
+    def __init__(self):
+        self.value = ""
+        self.children = [None]*R
 
 class Trie:
-    root: TrieNode = None
+    def __init__(self):
+        self.root = None
+
+    def getNode(self):
+        return TrieNode()
+
 
 
 sol=Solution5()
-print('Input is ["flower","flow","flight"], expect: "fl", mine is: ',sol.longestCommonPrefix(['flower', 'flow', 'flight']));
-print('Input is ["c","c","c"], expect: "c", mine is: ',sol.longestCommonPrefix(['c', 'c', 'c']));
-print('Input is ["dog","racecar","car"], expect: "", mine is: ',sol.longestCommonPrefix(["dog","racecar","car"]));
-print('Input is ["c","acc","ccc"], expect: "", mine is: ',sol.longestCommonPrefix(["c","acc","ccc"]));
+print('Input is ["flower","flow","flight"], expect: "fl", mine is: ',sol.longestCommonPrefix(['flower', 'flow', 'flight']))
+print('Input is ["c","c","c"], expect: "c", mine is: ',sol.longestCommonPrefix(['c', 'c', 'c']))
+print('Input is ["dog","racecar","car"], expect: "", mine is: ',sol.longestCommonPrefix(["dog","racecar","car"]))
+print('Input is ["c","acc","ccc"], expect: "", mine is: ',sol.longestCommonPrefix(["c","acc","ccc"]))
