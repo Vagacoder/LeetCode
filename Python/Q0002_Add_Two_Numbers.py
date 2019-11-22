@@ -16,7 +16,13 @@
 class ListNode:
     def __init__(self, x):
         self.val = x
-        self.next = None
+        self.next: ListNode = None
+
+    # helper function to print linked list
+    def printList(self):
+        print(self.val)
+        if(self.next != None):
+            self.next.printList()
 
 class Solution:
     def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
@@ -59,7 +65,7 @@ class Solution:
         return result
 
 # list1 = [2, 4, 3]
-list1 = [5]
+list1 = [2,4,3]
 l1 = ListNode(list1[0])
 cursor = l1
 for i in range(1, len(list1)):
@@ -67,7 +73,7 @@ for i in range(1, len(list1)):
     cursor = cursor.next
 
 # list2 = [5, 6, 4]
-list2 = [5]
+list2 = [5,6,4]
 l2 = ListNode(list2[0])
 cursor = l2
 for i in range(1, len(list2)):
@@ -76,4 +82,4 @@ for i in range(1, len(list2)):
 
 
 sol = Solution()
-print(sol.addTwoNumbers(l1, l2))
+print(sol.addTwoNumbers(l1, l2).printList())
