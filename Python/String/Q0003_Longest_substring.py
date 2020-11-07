@@ -1,26 +1,30 @@
-# 3. Longest Substring Without Repeating Characters
-# Hard
-# Given a string, find the length of the longest substring without repeating characters.
+#
+# * 3. Longest Substring Without Repeating Characters
+# ! Hard
+# * Given a string, find the length of the longest substring without repeating characters.
 
-# Example 1:
+# * Example 1:
 # Input: "abcabcbb"
 # Output: 3 
 # Explanation: The answer is "abc", with the length of 3. 
 
-# Example 2:
+# * Example 2:
 # Input: "bbbbb"
 # Output: 1
 # Explanation: The answer is "b", with the length of 1.
 
-# Example 3:
+# * Example 3:
 # Input: "pwwkew"
 # Output: 3
 # Explanation: The answer is "wke", with the length of 3. 
 #              Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
 
-# solution 1. Not working
+#%%
+
 class Solution:
-    def lengthOfLongestSubstring(self, s: str) -> int:
+    
+    # ? Solution 1. Not working
+    def lengthOfLongestSubstring1(self, s: str) -> int:
         lengthOfString = len(s)
         if lengthOfString == 1:
             return 1
@@ -53,9 +57,10 @@ class Solution:
         else:
             return lengthOfString
 
-# solution 2. works but slow O(n^3)
-class Solution1:
-    def lengthOfLongestSubstring(self, s: str) -> int:
+
+
+    # * Solution 2. works but slow O(n^3)
+    def lengthOfLongestSubstring2(self, s: str) -> int:
         lengthOfString = len(s)
         maxLength = 0
         for i in range (lengthOfString):
@@ -70,9 +75,10 @@ class Solution1:
         setOfString = set(s)
         return len(setOfString) == len(s)
 
-# solution 3. Works, need improvement
-class Solution2:
-    def lengthOfLongestSubstring(self, s: str) -> int:
+
+
+    # * Solution 3. Works, need improvement
+    def lengthOfLongestSubstring3(self, s: str) -> int:
         lengthOfString = len(s)
         cur1 = 0
         cur2 = 0
@@ -97,6 +103,37 @@ class Solution2:
         return len(setOfString) == len(s)
 
 
+
+    # * Solution 4
+    def lengthOfLongestSubstring4(self, s: str) -> int:
+        n = len(s)
+
+        dictWindow = {}
+
+        left = 0
+        right = 0
+        maxLength = 0
+        while right < n:
+            newC = s[right]
+            right += 1
+
+            if newC in dictWindow:
+                dictWindow[newC] += 1
+            else:
+                dictWindow[newC] = 1
+            
+            while dictWindow[newC] > 1:
+                removeC = s[left]
+                left += 1
+                dictWindow[removeC] -= 1
+            
+            maxLength = max(maxLength, right-left)
+        
+        return maxLength
+
+
+
+
 input1 = "abcabcbb"
 input2 = "bbbbbb"
 input3 = "pwwkew"
@@ -108,14 +145,16 @@ input8 = "cdd"
 input9 = "abba"
 input10 = "dvdf"
 
-sol = Solution2()
-print("abcabcbb should 3, mine is: ", sol.lengthOfLongestSubstring(input1))
-print("bbbbbb should 1, mine is: " , sol.lengthOfLongestSubstring(input2))
-print("pwwkew should 3, mine is: " , sol.lengthOfLongestSubstring(input3))
-print("empty should 0, mine is: " , sol.lengthOfLongestSubstring(input4))
-print("space should 1, mine is: " , sol.lengthOfLongestSubstring(input5))
-print("au should 2, mine is: " , sol.lengthOfLongestSubstring(input6))
-print("aab should 2, mine is: " , sol.lengthOfLongestSubstring(input7))
-print("cdd should 2, mine is: " , sol.lengthOfLongestSubstring(input8))
-print("abba should 2, mine is: " , sol.lengthOfLongestSubstring(input9))
-print("dvdf should 3, mine is: " , sol.lengthOfLongestSubstring(input10))
+sol = Solution()
+print("abcabcbb should 3, mine is: ", sol.lengthOfLongestSubstring4(input1))
+print("bbbbbb should 1, mine is: " , sol.lengthOfLongestSubstring4(input2))
+print("pwwkew should 3, mine is: " , sol.lengthOfLongestSubstring4(input3))
+print("empty should 0, mine is: " , sol.lengthOfLongestSubstring4(input4))
+print("space should 1, mine is: " , sol.lengthOfLongestSubstring4(input5))
+print("au should 2, mine is: " , sol.lengthOfLongestSubstring4(input6))
+print("aab should 2, mine is: " , sol.lengthOfLongestSubstring4(input7))
+print("cdd should 2, mine is: " , sol.lengthOfLongestSubstring4(input8))
+print("abba should 2, mine is: " , sol.lengthOfLongestSubstring4(input9))
+print("dvdf should 3, mine is: " , sol.lengthOfLongestSubstring4(input10))
+
+# %%

@@ -39,9 +39,52 @@
 class Solution:
 
     # * Solution 1
-    def findAnagrams1(self, s: str, p: str) -> List[int]:
-        pass
+    def findAnagrams1(self, s: str, p: str) -> list:
+        n1 = len(s)
+        n2 = len(p)
 
+        dictP = {}
+        for c in p:
+            if c in dictP:
+                dictP[c] += 1
+            else:
+                dictP[c] = 1
+
+        sizeDictP = len(dictP)
+
+        # print(dictP)
+
+        dictWindow = {}
+        left = 0
+        right = 0
+        valid = 0
+        result = []
+
+        while right < n1:
+            newC = s[right]
+            right += 1
+
+            if newC in dictP:
+                if newC in dictWindow:
+                    dictWindow[newC] += 1
+                else:
+                    dictWindow[newC] = 1
+                if dictWindow[newC] == dictP[newC]:
+                    valid += 1
+
+            while right - left >= n2:
+                if valid == sizeDictP:
+                    result.append(left)
+                
+                removeC = s[left]
+                left += 1
+
+                if removeC in dictP and removeC in dictWindow:
+                    if dictWindow[removeC] == dictP[removeC]:
+                        valid -= 1
+                    dictWindow[removeC] -= 1
+            
+        return result
 
 
 sol = Solution()
@@ -49,3 +92,5 @@ a = 'cbaebabacd'
 b = 'abc'
 r1 = sol.findAnagrams1(a, b)
 print(r1)
+
+# %%
