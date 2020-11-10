@@ -63,13 +63,21 @@ class Solution:
         sumPrice = sum(prices)
 
         for i in range(n):
+            # ! this is also base case, but dp[0][0][1] will never be used,
+            # ! so that we can skip this part
+            if i == 0:
+                dp[i][0][0] = 0
+                dp[i][0][1] = -sumPrice
+                
             for k in range(max_k, 0, -1):
+                # ! KEY ! must know how to calculate base case
                 if i == 0:
                     dp[i][k][0] = 0
-                    dp[i][k][1] = -sumPrice
-                # else:
-                dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i])
-                dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i])
+                    dp[i][k][1] = -prices[i]
+                    print(dp)
+                else:
+                    dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i])
+                    dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i])
         
         print(dp)
 
@@ -79,7 +87,7 @@ class Solution:
 
 
 sol = Solution()
-a1 = [1,2,3,4,5]
+a1 = [3,3,5,0,0,3,1,4]
 r1 = sol.maxProfit1(a1)
 print(r1)
 
