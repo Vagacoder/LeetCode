@@ -51,7 +51,6 @@ class Solution:
 
     # * Solution 2
     # ! Dynamic programming with compressed DP
-
     def maxProfit2(self, prices: list) -> int:
         n = len(prices)
         if n == 0:
@@ -67,9 +66,29 @@ class Solution:
         return dp_i_0
 
 
+    # * Solution 3
+    # ! Kadane Algorithm
+    def maxProfit3(self, prices: list)->int:
+        n = len(prices)
+        if n == 0:
+            return 0
+        
+        maxCurrent = 0
+        maxProfit = float('-inf')
+
+        for i in range(1, n):
+            maxCurrent += ((prices[i] - prices[i-1]))
+            # ! if maxCurrent < 0, we reset it, since min profit can be zero in 
+            # ! any situation
+            maxCurrent = max(0, maxCurrent)
+            maxProfit = max(maxCurrent, maxProfit)
+        
+        return maxProfit
+
+
 sol = Solution()
 a1 = [7, 1, 5, 3, 6, 4]
-r1 = sol.maxProfit2(a1)
+r1 = sol.maxProfit3(a1)
 print('Expected 5', r1)
 
 # %%
