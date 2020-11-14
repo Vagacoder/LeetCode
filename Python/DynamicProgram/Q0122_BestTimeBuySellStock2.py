@@ -45,6 +45,7 @@
 class Solution:
 
     # * Solution 1
+    # ! Dynamic programming
     def maxProfit1(self, prices: list) -> int:
         n = len(prices)
         if n == 0:
@@ -62,17 +63,33 @@ class Solution:
         
         return dp[n-1][0]
 
+    
+    # * Solution 2
+    # ! Greedy algorithm
+    def maxProfit2(self, prices:list) -> int:
+        n = len(prices)
+        if n == 0:
+            return 0
+
+        maxProfit = 0
+        for i in range(1, n):
+            maxProfit += max(0, prices[i] - prices[i-1])
+        
+        return maxProfit
+
+
+
 
 sol = Solution()
 a1 = [7,1,5,3,6,4]
-r1 = sol.maxProfit1(a1)
+r1 = sol.maxProfit2(a1)
 print(r1)
 
 a1 = [1,2,3,4,5]
-r1 = sol.maxProfit1(a1)
+r1 = sol.maxProfit2(a1)
 print(r1)
 
 a1 = [7,6,4,3,1]
-r1 = sol.maxProfit1(a1)
+r1 = sol.maxProfit2(a1)
 print(r1)
 # %%
