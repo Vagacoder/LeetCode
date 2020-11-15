@@ -60,14 +60,12 @@ class Solution:
 
         # print(dp)
 
-        sumPrice = sum(prices)
-
         for i in range(n):
             # ! this is also base case, but dp[0][0][1] will never be used,
             # ! so that we can skip this part
             if i == 0:
                 dp[i][0][0] = 0
-                dp[i][0][1] = -sumPrice
+                dp[i][0][1] = float('-inf')
                 
             for k in range(max_k, 0, -1):
                 # ! KEY ! must know how to calculate base case
@@ -83,6 +81,26 @@ class Solution:
 
         return dp[n-1][max_k][0]
 
+
+    # * Solution 2
+    # ! simplified, since 0 <= k <=2, list all possible k values
+    def maxProfit2(self, prices: list) -> int:
+        n = len(prices)
+        if n == 0:
+            return 0
+
+        dp_i10 = 0
+        dp_i20 = 0
+        dp_i11 = float('-inf')
+        dp_i21 = float('-inf')
+
+        for price in prices:
+            dp_i20 = max(dp_i20, dp_i21 + price)
+            dp_i21 = max(dp_i21, dp_i10 - price)
+            dp_i10 = max(dp_i10, dp_i11 + price)
+            dp_i11 = max(dp_i11, -price)
+
+        return dp_i20
 
 
 
