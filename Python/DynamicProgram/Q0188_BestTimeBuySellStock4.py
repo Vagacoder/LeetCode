@@ -38,20 +38,20 @@
 class Solution:
 
     # * Solution 1
-    # * copy from Q123
+    # * copy from Q123, Dynamic Programming
     def maxProfit1(self, k: int, prices: list) -> int:
         n = len(prices)
-        if n == 0:
+        if n == 0 or k == 0:
             return 0;
         
         dp = [[[0,0] for __ in range(k+1)] for _ in range(n)]
 
-        sumPrice = sum(prices)
+        # sumPrice = sum(prices)
 
         for i in range(n):
             if i == 0:
                 dp[i][0][0] = 0
-                dp[i][0][1] = -sumPrice
+                dp[i][0][1] = float('-inf')
 
             for j in range(k, 0, -1):
                 if i == 0:
@@ -65,15 +65,84 @@ class Solution:
         return dp[n-1][k][0]
 
 
+    # * Solution 2
+    # ! From Leetcode solution, Dynamic Programming
+    def maxProfit2(self, k: int, prices: list) -> int:
+        n = len(prices)
+        if n == 0 or k == 0:
+            return 0
+        
+        # ? if k*2 > n, it suggests that we can buy/sell everyday, which is no limit on k
+        # * here we use Greedy Algorithm from Q122
+        if (2 * k) > n:
+            result = 0
+            for i in range(1, n):
+                result += max(0, prices[i] - prices[i-1])
+
+            return result
+
+        # ? when k*2 < n
+
+        # * float('-inf') for impossible situation/not calculated yet
+        dp = [[[float('-inf'), float('-inf')] for _ in range(k+1)] for __ in range(n)]
+        # print(dp)
+
+        # ? base cases:
+        # * first day, no transaction is done, no stock in hand
+        dp[0][0][0] = 0
+        # * first day, did one transaction, stock in hand
+        dp[0][1][1] = -prices[0]
+
+        for i in range(1, n):
+            for j in range(k+1):
+                dp[i][j][0] = max(dp[i-1][j][0], dp[i-1][j][1] + prices[i])
+                # ! when j = 0 ,j-1 cannot be negative, 
+                # ! this means: you can't hold stock without transaction
+                if j > 0:
+                    dp[i][j][1] = max(dp[i-1][j][1], dp[i-1][j-1][0] - prices[i])
+
+        print(dp)
+
+        # return dp[n-1][k][0]
+
+        result = 0
+        for j in range(k+1):
+            result = max(result, dp[n-1][j][0])
+        
+        return result
+
+
+    # * Solution 3
+    # ! From Leetcode solution, Merging
+    def maxProfit2(self, k: int, prices: list) -> int:
+        n = len(prices)
+        if n == 0 or k == 0:
+            return 0
+
+        # TODO
+
+    
+
+
 sol = Solution()
-k = 2
-prices = [3,2,6,5,0,3]
-r1 = sol.maxProfit1(k, prices)
-print(r1)
 
-k = 2
-prices = [2,4,1]
-r1 = sol.maxProfit1(k, prices)
-print(r1)
+# k = 2
+# prices = [3,2,6,5,0,3]
+# r1 = sol.maxProfit2(k, prices)
+# print(r1)
 
+# k = 2
+# prices = [2,4,1]
+# r1 = sol.maxProfit2(k, prices)
+# print(r1)
+
+# k = 2
+# prices = [6,1,3,2,4,7]
+# r1 = sol.maxProfit2(k, prices)
+# print(r1)
+
+k = 4
+prices = [1,2,4,2,5,7,2,4,9,0]
+r1 = sol.maxProfit2(k, prices)
+print(r1)
 # %%
