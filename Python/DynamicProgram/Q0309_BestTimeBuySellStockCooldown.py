@@ -46,9 +46,39 @@ class Solution:
         return dp[n-1][0]
 
 
+    # * Solution 2
+    # ! using 3 states for holding stock: 
+    # !     0, not holding but can buy
+    # !     1, holding
+    # !     2, not holding cannot but (in rest)
+    def maxProfit2(self, prices: list) -> int:
+        n = len(prices)
+        if n == 0:
+            return 0
+
+        # * dp shape is n x 3
+        dp = [[0,0,0] for _ in range(n)]
+
+        # * base cases
+        dp[0][0] = 0
+        dp[0][1] = -prices[0]
+        dp[0][2] = float('-inf')
+
+        for i in range(1, n):
+            dp[i][0] = max(dp[i-1][0], dp[i-1][2])
+            dp[i][1] = max(dp[i-1][1], dp[i-1][0] - prices[i])
+            dp[i][2] = dp[i-1][1] + prices[i]
+
+        # print(dp)
+
+        # ! NOTE: highest profit could in either states 0 or 2
+        return max(dp[n-1][0], dp[n-1][2])
+
 
 sol = Solution()
 a = [1, 2, 3, 0, 2]
-r1 = sol.maxProfit1(a)
+r1 = sol.maxProfit2(a)
 print(r1)
 
+
+# %%
