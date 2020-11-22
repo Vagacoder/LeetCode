@@ -38,7 +38,7 @@
 
 class Solution:
 
-    # * Solution 1 
+    # * Solution 1, Dynamic, from top to bottom
     def rob1(self, nums: list) -> int:
         n = len(nums)
         if n == 0:
@@ -100,15 +100,47 @@ class Solution:
         return dp(nums, 0)
 
 
+    # * Solution 4, Dynamic, from bottom to top
+    def rob4(self, nums: list) -> int:
+        n = len(nums)
+
+        # * initial dp, we need check dp[i+2], so length of dp is n+2
+        dp = [0] * (n+2)
+
+        # * rob from last house to first house
+        for i in range(n-1, -1, -1):
+            dp[i] = max(dp[i+1], nums[i] + dp[i+2])
+
+        # * max profit at first house
+        return dp[0]
+
+
+    # * Solution 5, Dynamic, from bottom to top, with optimization
+    def rob5(self, nums: list) -> int:
+        n = len(nums)
+
+        # * record dp[i+1], dp[i+2]
+        dpi1 = 0
+        dpi2 = 0
+
+        # * record dp[i]
+        dpi = 0
+        for i in range(n-1, -1, -1):
+            dpi = max(dpi1, nums[i] + dpi2)
+            dpi2 = dpi1
+            dpi1 = dpi
+
+        return dpi
+
 
 
 sol = Solution()
 
 nums = [1,2,3,1]
-r1 = sol.rob3(nums)
+r1 = sol.rob5(nums)
 print(r1)
 
 nums = [2,7,9,3,1]
-r1 = sol.rob3(nums)
+r1 = sol.rob5(nums)
 print(r1)
 # %%
