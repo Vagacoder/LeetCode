@@ -8,13 +8,13 @@
 # Given nums = [2, 7, 11, 15], target = 9,
 # Because nums[0] + nums[1] = 2 + 7 = 9,
 # return [0, 1].
+
+#%%
 from typing import List
 
-# solution 1 brutal force ( O(n^2) )
-
-
 class Solution:
-    def twoSum(self, nums: List[int], target: int) -> List[int]:
+    # * Solution 1,  Brutal Force ( O(n^2) )
+    def twoSum1(self, nums: List[int], target: int) -> List[int]:
         numsLen = len(nums)
         for i in range(numsLen):
             for j in range(i+1, numsLen):
@@ -23,9 +23,8 @@ class Solution:
         return[-1, -1]
 
 
-# solution 2 ( O(n) )
-class Solution1:
-    def twoSum(self, nums: List[int], target: int) -> List[int]:
+    # * Solution 2, Hash ( O(n) )
+    def twoSum2(self, nums: List[int], target: int) -> List[int]:
         numsLen = len(nums)
         # temporay dic to store key-value pair:
         # key is difference betweem target and nums[index];
@@ -39,11 +38,9 @@ class Solution1:
                 indexList[difference] = i
         return [-1, -1]
 
-# solution 3 using array, it may out of bound.
 
-
-class Solution2:
-    def twoSum(self, nums: List[int], target: int) -> List[int]:
+    # * Solution 3, using array, it may out of bound.
+    def twoSum3(self, nums: List[int], target: int) -> List[int]:
         numsLen = len(nums)
         checkList = [-1] * (1000)
         for i in range(numsLen):
@@ -54,13 +51,13 @@ class Solution2:
 
         return [-1, -1]
 
-# solution 4 O(n) using sorting, returned result may match original index
 
-
-class Solution3:
-    def twoSum(self, nums: List[int], target: int) -> List[int]:
+    # * Solution 4, Sorting first, then using two pointers ( O(n) )
+    def twoSum4(self, nums: List[int], target: int) -> List[int]:
         numsLen: int = len(nums)
+        # ! Sort
         nums.sort()
+        # ! Two pointers
         low: int = 0
         high: int = numsLen - 1
 
@@ -76,7 +73,7 @@ class Solution3:
         return [-1, -1]
 
 
-sol = Solution1()
+sol = Solution()
 
 nums1 = [1, 2, 3, 7, 11, 15]
 nums2 = [2, 11, 7, 15]
@@ -84,7 +81,9 @@ nums3 = [1, 2, 7]
 nums4 = [-3, 4, 3, 90]
 target1 = 9
 
-print(sol.twoSum(nums1, target1))
-print(sol.twoSum(nums2, target1))
-print(sol.twoSum(nums3, target1))
-print(sol.twoSum(nums4, target1))
+print(sol.twoSum4(nums1, target1))
+print(sol.twoSum4(nums2, target1))
+print(sol.twoSum4(nums3, target1))
+print(sol.twoSum4(nums4, target1))
+
+# %%

@@ -13,11 +13,12 @@
 #  [-1, -1, 2]
 # ]
 
+#%%
 from typing import List
 
-# Solution 1 brutal force O(N^3) exceed time limit
-class Solution1:
-    def threeSum(self, nums: List[int]) -> List[List[int]]:
+class Solution:
+    # * Solution 1 brutal force O(N^3) exceed time limit
+    def threeSum1(self, nums: List[int]) -> List[List[int]]:
         N: int = len(nums)
         result = []
         for i in range(N):
@@ -31,9 +32,8 @@ class Solution1:
 
         return result
 
-# Solution 2 faster but still exceed time limit
-class Solution2:
-    def threeSum(self, nums: List[int]) -> List[List[int]]:
+    # * Solution 2 faster but still exceed time limit
+    def threeSum2(self, nums: List[int]) -> List[List[int]]:
         nums.sort()
         N: int = len(nums)
         result = []
@@ -56,9 +56,8 @@ class Solution2:
 
         return result
 
-# Solution 3 still exceed time limit
-class Solution3:
-    def threeSum(self, nums: List[int]) -> List[List[int]]:
+    # * Solution 3 still exceed time limit
+    def threeSum3(self, nums: List[int]) -> List[List[int]]:
         numPool = {}
         if len(nums) > 0:
             numPool[nums[0]] = 0
@@ -78,12 +77,65 @@ class Solution3:
         return result
 
 
-sol = Solution3()
+    # * Solution 4
+    def threeSum4(self, nums: list, target: int)-> list:
+        nums.sort()
+
+        # print(nums)
+
+        n = len(nums)
+        result =[]
+
+        # ! i for 1st number, low (left) for 2nd number,  high (right) for 3rd number
+        for i in range(n):
+            
+            # * skip repeated 1st number
+            if i > 0 and nums[i] == nums[i-1]:
+                continue
+
+            currentI = nums[i]
+            low = i+1
+            high = n-1
+
+            while high > low:
+                left = nums[low]
+                right = nums[high]
+                
+                # print(i, low, high, currentSum)
+
+                if currentI + left + right == target:
+                    result.append([nums[i], nums[low], nums[high]])
+                    
+                    # * skip repeated 2nd and 3rd numbers
+                    while nums[low] == left and low < high:
+                        low += 1
+
+                    while nums[high] == right and low < high:
+                        high -= 1
+
+                elif currentI + left + right > target:
+                    
+                    # * skip repeated 3rd number
+                    while low < high and nums[high] == right:
+                        high -= 1
+                else:
+                    # * skip repeated 2nd number
+                    while low < high and nums[low] == left :
+                        low += 1
+
+        return result
+
+
+sol = Solution()
 a = [-1, 0, 1, 2, -1, -4]
 b = []
 c = [0]
 d = [1]
-print(sol.threeSum(a))
-print(sol.threeSum(b))
-print(sol.threeSum(c))
-print(sol.threeSum(d))
+e = [0,0,0,0]
+print(sol.threeSum4(a, 0))
+print(sol.threeSum4(b, 0))
+print(sol.threeSum4(c, 0))
+print(sol.threeSum4(d, 0))
+print(sol.threeSum4(e, 0))
+
+# %%
