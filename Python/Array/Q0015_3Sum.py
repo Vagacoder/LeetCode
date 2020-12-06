@@ -77,7 +77,7 @@ class Solution:
         return result
 
 
-    # * Solution 4
+    # * Solution 4, Sorting + 2 Pointers
     def threeSum4(self, nums: list, target: int)-> list:
         nums.sort()
 
@@ -126,16 +126,36 @@ class Solution:
         return result
 
 
+    # * Solution 5, Hash
+    def threeSum5(self, nums: list, target: int)-> list:
+        n = len(nums)
+        value2IndexDict = {}
+
+        for index in range(n):
+            value = nums[index]
+            value2IndexDict[value] = index
+
+        result = set()
+        for i in range(n):
+            for j in range(i+1, n):
+                diff = target - nums[i] - nums[j]
+                if (diff in value2IndexDict) and i != value2IndexDict[diff] and j != value2IndexDict[diff]:
+                    temp = sorted([nums[i], nums[j], diff])
+                    result.add(tuple(temp))
+        
+        return [list(x) for x in result]
+
+
 sol = Solution()
 a = [-1, 0, 1, 2, -1, -4]
 b = []
 c = [0]
 d = [1]
 e = [0,0,0,0]
-print(sol.threeSum4(a, 0))
-print(sol.threeSum4(b, 0))
-print(sol.threeSum4(c, 0))
-print(sol.threeSum4(d, 0))
-print(sol.threeSum4(e, 0))
+print(sol.threeSum5(a, 0))
+print(sol.threeSum5(b, 0))
+print(sol.threeSum5(c, 0))
+print(sol.threeSum5(d, 0))
+print(sol.threeSum5(e, 0))
 
 # %%
