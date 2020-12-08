@@ -38,10 +38,45 @@ class TreeNode:
 
 
 class Solution:
-    # * Solution 1
-    def constructMaximumBinaryTree(self, nums: List[int]) -> TreeNode:
-        pass
+    # * Solution 1, Recursive
+    def constructMaximumBinaryTree(self, nums: list) -> TreeNode:
+        
+        def findMaxIndex(nums: list, startI: int, endI: int)-> int:
+            return nums.index(max(nums[startI: endI]))
 
+        # print(findMaxIndex(nums, 0, len(nums)))
+
+        def buildMaxBinTree(nums:list, startI: int, endI: int) -> TreeNode:
+            if startI >= endI:
+                return None
+
+            root = TreeNode()
+            maxI = findMaxIndex(nums, startI, endI)
+            root.val = nums[maxI]
+            root.left = buildMaxBinTree(nums, startI, maxI)
+            root.right = buildMaxBinTree(nums, maxI+1, endI)
+            return root
+
+        return buildMaxBinTree(nums, 0, len(nums))
+
+
+    # * Solution 2, Using stack, O(N)
+    # ! Awesome !
+    def constructMaximumBinaryTree2(self, nums: list) -> TreeNode:
+        n = len(nums)
+        stack = []
+
+        for i in range(n):
+            cur = TreeNode(nums[i])
+            while stack and stack[-1].val < nums[i]:
+                cur.left = stack.pop()
+
+            if stack:
+                stack[-1].right = cur
+            
+            stack.append(cur)
+        
+        return stack[0]
 
 
 
@@ -87,7 +122,7 @@ def printTreeBFS(root: TreeNode):
         
 
 
-tree = [4,2,7,1,3,6,9]
+tree = [3,2,1,6,0,5]
 root = buildTree(tree)
 
 # * Test Helpers
@@ -101,3 +136,8 @@ root = buildTree(tree)
 # printTreeBFS(root)
 
 # * Test soluiotns
+sol = Solution()
+r1 = sol.constructMaximumBinaryTree2(tree)
+printTreeBFS(r1)
+
+# %%
