@@ -74,16 +74,18 @@ class Solution:
 
             leftStr = traversalSubTree(root.left)
             rightStr = traversalSubTree(root.right)
-            rootStr = leftStr + ',' + rightStr + ',' + str(root.val)
+            # ! Can use immutable types here: string, tuple, as key
+            # rootStr = leftStr + ',' + rightStr + ',' + str(root.val)
+            rootTuple = (leftStr, rightStr, str(root.val))
 
-            if rootStr in allSubTrees:
-                if allSubTrees[rootStr] == 1:
+            if rootTuple in allSubTrees:
+                if allSubTrees[rootTuple] == 1:
                     result.append(root)
-                allSubTrees[rootStr] +=1
+                allSubTrees[rootTuple] +=1
             else:
-                allSubTrees[rootStr] = 1
+                allSubTrees[rootTuple] = 1
 
-            return rootStr
+            return rootTuple
 
         traversalSubTree(root)
         return result
