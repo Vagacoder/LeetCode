@@ -52,7 +52,7 @@ class TreeNode(object):
         self.left = None
         self.right = None
 
-
+# * Solution 1, BFS
 class Codec:
 
     def serialize(self, root):
@@ -93,33 +93,25 @@ class Codec:
         :type data: str
         :rtype: TreeNode
         """
+        if len(data) == 0:
+            return None
 
-        def buildNode(index:int)-> TreeNode:
-            if index >= len(data):
-                return None
-
-            thisNode = TreeNode(None)
-            # thisNode.val = vals[index]
-            # # ! Modified to exclude None in vals[]
-            if data[index] != 'null':
-                thisNode.val = data[index]
+        def buildNode(root: TreeNode)-> TreeNode:
+            if len(data) == 0:
+                return root
             else:
-                return None
+                leftVal = data.pop(0)
+                rightVal = data.pop(0)
+                if leftVal != 'null':
+                    root.left = TreeNode(leftVal)
+                    buildNode(root.left)
+                if rightVal != 'null':
+                    root.right = TreeNode(rightVal)
+                    buildNode(root.right)
+            
+            return root
 
-            n = len(data)
-            leftI = index*2+1
-            if leftI < n:
-                thisNode.left = buildNode(leftI)
-            rightI = index*2+2
-            if rightI < n:
-                thisNode.right = buildNode(rightI)
-
-            return thisNode
-
-        return buildNode(0)
-
-
-
+        return buildNode(TreeNode(data.pop(0)))
 
         
 
@@ -208,6 +200,8 @@ print(serResult)
 print()
 
 deser = Codec()
-ans = deser.deserialize(serResult)
+tree1 = [1, 2, 3, 'null', 'null', 4, 5, 6, 7]
+ans = deser.deserialize(tree1)
 print(ans)
 printTreeBFS(ans)
+# %%
