@@ -1,26 +1,26 @@
 #
-# * 141. Linked List Cycle
-# * Easy
+# * 142. Linked List Cycle 2
+# * Medium
 
-# * Given head, the head of a linked list, determine if the linked list has a cycle in it.
+# * Given a linked list, return the node where the cycle begins. If there is no 
+# * cycle, return null.
 
 # There is a cycle in a linked list if there is some node in the list that can be 
 # reached again by continuously following the next pointer. Internally, pos is 
 # used to denote the index of the node that tail's next pointer is connected to. 
-# * Note that pos is not passed as a parameter.
+# Note that pos is not passed as a parameter.
 
-# Return true if there is a cycle in the linked list. Otherwise, return false.
+# Notice that you should not modify the linked list.
 
-# * Example 1:
+# Example 1:
 
 # * 3 -> 2 -> 0 -> 4
 # *      |         |
 # *      ----------
 
 # Input: head = [3,2,0,-4], pos = 1
-# Output: true
-# Explanation: There is a cycle in the linked list, where the tail connects to 
-# the 1st node (0-indexed).
+# Output: tail connects to node index 1
+# Explanation: There is a cycle in the linked list, where tail connects to the second node.
 
 # * Example 2:
 
@@ -29,8 +29,8 @@
 # * -----
 
 # Input: head = [1,2], pos = 0
-# Output: true
-# Explanation: There is a cycle in the linked list, where the tail connects to the 0th node.
+# Output: tail connects to node index 0
+# Explanation: There is a cycle in the linked list, where tail connects to the first node.
 
 # * Constraints:
 
@@ -38,11 +38,7 @@
 #     -105 <= Node.val <= 105
 #     pos is -1 or a valid index in the linked-list.
 
-# ? Follow up: Can you solve it using O(1) (i.e. constant) memory?
-
-
 #%%
-
 # * Definition for singly-linked list.
 class ListNode:
     def __init__(self, x):
@@ -50,32 +46,43 @@ class ListNode:
         self.next = None
 
 class Solution:
-
     # * Solution 1
-    # ! Hash memo Space O(n)
-    def hasCycle(self, head: ListNode) -> bool:
-        visited = set()
+    # ! Hash memo
+    def detectCycle(self, head: ListNode) -> ListNode:
+        visited =set()
         while head != None:
             if head not in visited:
                 visited.add(head)
                 head = head.next
             else:
-                return True
-        return False
+                return head
+
+        return None
 
 
     # * Solution 2
-    # ! Two pointers: Fast and Slow
-    def hasCycle2(self, head: ListNode) -> bool:
+    # ! Two pointers: fast and slow
+    def detectCycle2(self, head: ListNode) -> ListNode:
         slow = head
         fast = head
-        while fast and fast.next and fast.next:
-            fast = fast.next.next
+
+        while fast:
+            fast = fast.next
+            if fast:
+                fast = fast.next
             slow = slow.next
             if fast == slow:
-                return True
+                break
 
-        return False
+        if fast == None:
+            return None
+
+        slow = head
+        while fast != slow:
+            fast = fast.next
+            slow = slow.next
+
+        return slow
 
 
 
@@ -104,7 +111,6 @@ def printLinkedList(head: ListNode):
         print('END')
 
 
-
 sol = Solution()
 nodes = [3, 2, 0, -4]
 pos = 1
@@ -113,18 +119,21 @@ print(head)
 print(head.val)
 printLinkedList(head)
 
-r1 = sol.hasCycle2(head)
+r1 = sol.detectCycle2(head)
 print(r1)
+print(r1.val)
 
 print()
-nodes = [1,2]
+nodes = [1]
 pos = -1
 head: ListNode = buildLinkedList(nodes, 0, pos, None)
 print(head)
 print(head.val)
 printLinkedList(head)
 
-r1 = sol.hasCycle2(head)
+r1 = sol.detectCycle2(head)
 print(r1)
+if r1:
+    print(r1.val)
 
 print()
