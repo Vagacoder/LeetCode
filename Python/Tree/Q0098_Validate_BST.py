@@ -64,16 +64,19 @@ class Solution:
 
     # * Solution 2
     # ! Preoder tranversal
+    
     def isValidBST2(self, root: TreeNode)-> bool:
         
+        self.preVal = None
+
         # * Preorder traversal
-        def isValidBstHelper(root: TreeNode, preVal: int) -> bool:
+        def isValidBstHelper(root: TreeNode) -> bool:
             # * base case 
             if not root:
                 return True
 
             # * left subtree
-            isLeftValid = isValidBstHelper(root.left, preVal)
+            isLeftValid = isValidBstHelper(root.left)
             if not isLeftValid:
                 return False
 
@@ -83,18 +86,18 @@ class Solution:
             if root.right and root.right.val <= root.val:
                 return False
 
-            if preVal != None and preVal >= root.val:
+            if self.preVal != None and self.preVal >= root.val:
                 return False
          
-            preVal = root.val
+            self.preVal = root.val
             
             # * right subtree
-            isRightValid = isValidBstHelper(root.right, preVal)
+            isRightValid = isValidBstHelper(root.right)
 
             return isRightValid
 
-        preVal = None
-        return isValidBstHelper(root, preVal)
+        
+        return isValidBstHelper(root)
 
 
 
@@ -103,26 +106,27 @@ class Solution:
 def buildTree(vals: list)-> TreeNode:
 
     # * Recursive helper
-    def buildChildNode(root: TreeNode, vals:list):
-        if len(vals) > 0:
-            leftVal = vals.pop(0)
-            if leftVal:
-                root.left = TreeNode(leftVal)
-        if len(vals) > 0:
-            rightVal = vals.pop(0)
-            if rightVal:
-                root.right = TreeNode(rightVal)
+    def buildNode(index:int)-> TreeNode:
+        thisNode = TreeNode()
+        # thisNode.val = vals[index]
 
-        if root.left:
-            buildChildNode(root.left, vals)
-        if root.right:
-            buildChildNode(root.right, vals)
+        # # ! Modified to exclude None in vals[]
+        if vals[index] != None:
+            thisNode.val = vals[index]
+        else:
+            return None
 
+        n = len(vals)
+        leftI = index*2+1
+        if leftI < n:
+            thisNode.left = buildNode(leftI)
+        rightI = index*2+2
+        if rightI < n:
+            thisNode.right = buildNode(rightI)
 
-    nodes = vals.copy()
-    root = TreeNode(nodes.pop(0))
-    buildChildNode(root, nodes)
-    return root
+        return thisNode
+    
+    return buildNode(0)
 
 
 # ? Print a tree traversaling in in-order
@@ -142,13 +146,15 @@ def printTreeBFS(root: TreeNode):
             print(thisNode.val)
             queue.append(thisNode.left)
             queue.append(thisNode.right)
+        else:
+            print('None')
 
 
 sol = Solution()
 
 nodes = [2, 1, 3]
 head = buildTree(nodes)
-printTreeInorder(head)
+# printTreeInorder(head)
 print()
 printTreeBFS(head)
 print()
@@ -159,7 +165,7 @@ print()
 
 nodes = [5,1,4,None,None,3,6]
 head = buildTree(nodes)
-printTreeInorder(head)
+# printTreeInorder(head)
 print()
 printTreeBFS(head)
 print()
@@ -170,7 +176,7 @@ print()
 
 nodes = [4,3,5,None,None,1,6]
 head = buildTree(nodes)
-printTreeInorder(head)
+# printTreeInorder(head)
 print()
 printTreeBFS(head)
 print()
@@ -181,7 +187,7 @@ print()
 
 nodes = [1,1]
 head = buildTree(nodes)
-printTreeInorder(head)
+# printTreeInorder(head)
 print()
 printTreeBFS(head)
 print()
@@ -192,7 +198,7 @@ print()
 
 nodes = [32,26,47,19,None,None,56,None,27]
 head = buildTree(nodes)
-printTreeInorder(head)
+# printTreeInorder(head)
 print()
 printTreeBFS(head)
 print()
