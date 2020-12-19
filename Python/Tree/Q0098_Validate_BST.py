@@ -63,13 +63,14 @@ class Solution:
 
 
     # * Solution 2
-    # ! Preoder tranversal
-    
+    # ! INorder tranversal
+    # ? In inorder tranversal on BST, current node val is always smaller than
+    # ? previouos node val. We use self.preval to store val of previous node.
     def isValidBST2(self, root: TreeNode)-> bool:
         
         self.preVal = None
 
-        # * Preorder traversal
+        # * Inorder traversal
         def isValidBstHelper(root: TreeNode) -> bool:
             # * base case 
             if not root:
@@ -100,6 +101,23 @@ class Solution:
         return isValidBstHelper(root)
 
 
+    # * Solution 3
+    # ! PREorder tranversal with val range
+    def isValidBST3(self, root: TreeNode)-> bool:
+        def isValidBstHelper(root: TreeNode, minVal: int, maxVal: int):
+            # Base case
+            if not root:
+                return True
+            if root.val <= minVal:
+                return False
+            if root.val >= maxVal:
+                return False
+            return isValidBstHelper(root.left, minVal, root.val) and isValidBstHelper(root.right, root.val, maxVal)
+
+        return isValidBstHelper(root, float('-inf'), float('inf'))
+
+
+
 
 # * Helpers
 # ? Build a tree from a list
@@ -110,7 +128,7 @@ def buildTree(vals: list)-> TreeNode:
         thisNode = TreeNode()
         # thisNode.val = vals[index]
 
-        # # ! Modified to exclude None in vals[]
+        # ! Modified to exclude None in vals[]
         if vals[index] != None:
             thisNode.val = vals[index]
         else:
@@ -159,7 +177,7 @@ print()
 printTreeBFS(head)
 print()
 
-r1 = sol.isValidBST2(head)
+r1 = sol.isValidBST3(head)
 print(r1)
 print()
 
@@ -170,7 +188,7 @@ print()
 printTreeBFS(head)
 print()
 
-r1 = sol.isValidBST2(head)
+r1 = sol.isValidBST3(head)
 print(r1)
 print()
 
@@ -181,7 +199,7 @@ print()
 printTreeBFS(head)
 print()
 
-r1 = sol.isValidBST2(head)
+r1 = sol.isValidBST3(head)
 print(r1)
 print()
 
@@ -192,7 +210,7 @@ print()
 printTreeBFS(head)
 print()
 
-r1 = sol.isValidBST2(head)
+r1 = sol.isValidBST3(head)
 print(r1)
 print()
 
@@ -203,6 +221,6 @@ print()
 printTreeBFS(head)
 print()
 
-r1 = sol.isValidBST2(head)
+r1 = sol.isValidBST3(head)
 print(r1)
 # %%
