@@ -55,14 +55,50 @@ class Solution:
 
 
     # * Solution 2
-    # ! Patience Sorting + Binary Search !
+    # !!! Patience Sorting + Binary Search !!!
+    # TODO
     def lengthOfLIS2(self, nums:list)-> int:
-        pass
+
+        # # * Helper of binary search in list
+        # def binarySearch(vals:list, start:int, end: int, val:int)->int:
+        #     if start > end:
+        #         return end;
+
+        #     middle = (start + end)//2
+
+        #     if vals[middle] == val:
+        #         return middle
+        #     elif vals[middle] > val:
+        #         return binarySearch(vals, start, middle-1, val)
+        #     elif vals[middle] < val:
+        #         return binarySearch(vals, middle+1, end, val)
+
+
+        dp = [-1] * len(nums)
+        piles = 0
+
+        for num in nums:
+            left = 0
+            right = piles
+            while left != right:
+                middle = (left + right) // 2
+                if dp[middle] < num:
+                    left = middle + 1
+                else:
+                    right = middle
+            
+            dp[left] = num
+            piles = max(left+1, piles)
+
+        return piles
 
 
     # * Solution 3
-    # ! Recursive
+    # ! Recursive, Actually is same as Solution 1, 
+    # ! TLE
     def lengthOfLIS3(self, nums:list)-> int:
+
+        # * Recursive helper
         def lisHelper(nums:list, preVal: int, cur: int):
             # * Base case
             if cur == len(nums):
@@ -79,19 +115,75 @@ class Solution:
         return lisHelper(nums, min(nums)-1, 0)
 
 
+    # * Solution 4
+    # ! Recursive with memo, improved from Solution 3.
+    # ! Still TLE
+    def lengthOfLIS4(self, nums:list)-> int:
+        
+        memo = [[-1]*len(nums) for _ in range(len(nums)+1) ]
+        # print(memo)
+
+        # * Recursive helper
+        def lisHelper(nums:list, preIndex:int, cur:int):
+            # * Base case 
+            if cur == len(nums):
+                return 0;
+            
+            if memo[preIndex+1][cur] >= 0:
+                return memo[preIndex+1][cur]
+            
+            includeThis = 0
+            if preIndex < 0 or nums[cur] > nums[preIndex]:
+                includeThis  = 1 + lisHelper(nums, cur, cur+1)
+            
+            notIncludeThis = lisHelper(nums, preIndex, cur+1)
+            memo[preIndex+1][cur] = max(includeThis, notIncludeThis)
+            return memo[preIndex+1][cur]
+
+        return lisHelper(nums, -1, 0)
+
 
 
 sol = Solution()
 nums = [10, 9, 2, 5, 3, 7, 101, 18]
-r1 = sol.lengthOfLIS3(nums)
+r1 = sol.lengthOfLIS2(nums)
 print(r1)
 
 nums = [0,1, 0, 3, 2, 3]
-r1 = sol.lengthOfLIS3(nums)
+r1 = sol.lengthOfLIS2(nums)
 print(r1)
 
 
 nums = [7,7,7,7,7,7,7,7]
-r1 = sol.lengthOfLIS3(nums)
+r1 = sol.lengthOfLIS2(nums)
 print(r1)
+
+# # * Helper of binary search in list
+# # TODO
+# def binarySearch(vals:list, start:int, end: int, val:int)->int:
+#     if start > end:
+#         return end;
+
+#     middle = (start + end)//2
+
+#     if vals[middle] == val:
+#         return middle
+#     elif vals[middle] > val:
+#         return binarySearch(vals, start, middle-1, val)
+#     elif vals[middle] < val:
+#         return binarySearch(vals, middle+1, end, val)
+
+# n1 = [10, 11, 12, 13, 14]
+# print(binarySearch(n1, 0, 3, 10))
+# print(binarySearch(n1, 0, 3, 11))
+# print(binarySearch(n1, 0, 3, 13))
+# print(binarySearch(n1, 0, 3, 14))
+# print(binarySearch(n1, 1, 3, 10))
+# print(binarySearch(n1, 1, 3, 9))
+# print(binarySearch(n1, 1, 3, 14))
+
+# n2 = [21, 22, 24, 25, 26]
+# print(binarySearch(n1, 0, 3, 23))
+
+
         
