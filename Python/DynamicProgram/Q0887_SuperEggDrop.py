@@ -83,31 +83,70 @@ class Solution:
 
 
         return dp(K, N)
+
+    
+    # * Solution 3
+    # ! Recurisve with memo, plus binary search
+    def superEggDrop3(self, K: int, N: int) -> int:
+        memo = {}
+
+        def dp(K:int, N:int) -> int:
+            if K == 1:
+                return N
+            if N == 0:
+                return 0
+            if (K, N) in memo:
+                return memo[(K, N)]
+
+            result = float('INF')
+            # ? old implementation in solution 2
+            # for i in range(1, N+1):
+            #     result = min(result, max(dp(K, N-i), dp(K-1, i-1))+1)
+            # ! new binary search
+            low = 1
+            high = N
+            while low <= high:
+                middle = (low + high)//2
+                broken = dp(K - 1, middle - 1) # 碎
+                not_broken = dp(K, N - middle) # 没碎
+                # res = min(max(碎，没碎) + 1)
+                if broken > not_broken:
+                    high = middle - 1
+                    result = min(result, broken + 1)
+                else:
+                    low = middle + 1
+                    result = min(result, not_broken + 1)
+
+            memo[(K, N)] = result
+            return result
+
+
+        return dp(K, N)
     
 
 sol = Solution()
 k1 = 1
 n1 = 2
-r1 = sol.superEggDrop2(k1, n1)
+r1 = sol.superEggDrop3(k1, n1)
 print('ex: {}, res: {}'.format(2, r1))
 
 k1 = 2
 n1 = 6
-r1 = sol.superEggDrop2(k1, n1)
+r1 = sol.superEggDrop3(k1, n1)
 print('ex: {}, res: {}'.format(3, r1))
 
 k1 = 3
 n1 = 14
-r1 = sol.superEggDrop2(k1, n1)
+r1 = sol.superEggDrop3(k1, n1)
 print('ex: {}, res: {}'.format(4, r1))
 
 k1 = 3
 n1 = 25
-r1 = sol.superEggDrop2(k1, n1)
+r1 = sol.superEggDrop3(k1, n1)
 print('ex: {}, res: {}'.format(5, r1))
 
 k1 = 4
 n1 = 2000
-r1 = sol.superEggDrop2(k1, n1)
+r1 = sol.superEggDrop3(k1, n1)
 print(r1)
 # %%
