@@ -122,31 +122,54 @@ class Solution:
 
 
         return dp(K, N)
+
+
+    # * Solution 4
+    # ! Dynamic with different thought
+    def superEggDrop4(self, K: int, N: int) -> int:
+
+        dp = [[0]*(N+1) for _ in range(K+1)]
+
+        # print(dp)
+        # dp[1][0] = 99
+        # print(dp)
+
+        # * base case: no need, all set in initialization
+        # dp[0][..] = 0
+        #  dp[..][0] = 0
+
+        m = 0
+        while(dp[K][m] < N):
+            m += 1
+            for k in range(1, K+1):
+                dp[k][m] = dp[k][m-1] + dp[k-1][m-1] + 1;
+
+        return m
     
 
 sol = Solution()
 k1 = 1
 n1 = 2
-r1 = sol.superEggDrop3(k1, n1)
+r1 = sol.superEggDrop4(k1, n1)
 print('ex: {}, res: {}'.format(2, r1))
 
 k1 = 2
 n1 = 6
-r1 = sol.superEggDrop3(k1, n1)
+r1 = sol.superEggDrop4(k1, n1)
 print('ex: {}, res: {}'.format(3, r1))
 
 k1 = 3
 n1 = 14
-r1 = sol.superEggDrop3(k1, n1)
+r1 = sol.superEggDrop4(k1, n1)
 print('ex: {}, res: {}'.format(4, r1))
 
 k1 = 3
 n1 = 25
-r1 = sol.superEggDrop3(k1, n1)
+r1 = sol.superEggDrop4(k1, n1)
 print('ex: {}, res: {}'.format(5, r1))
 
 k1 = 4
 n1 = 2000
-r1 = sol.superEggDrop3(k1, n1)
+r1 = sol.superEggDrop4(k1, n1)
 print(r1)
 # %%
