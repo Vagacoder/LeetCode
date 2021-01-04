@@ -136,7 +136,7 @@ class Solution:
 
         # * base case: no need, all set in initialization
         # dp[0][..] = 0
-        #  dp[..][0] = 0
+        # dp[..][0] = 0
 
         m = 0
         while(dp[K][m] < N):
@@ -145,31 +145,86 @@ class Solution:
                 dp[k][m] = dp[k][m-1] + dp[k-1][m-1] + 1;
 
         return m
-    
+
+
+    # * Solution 5
+    # ! Dynamic Programming with Optimality Criterion, From solutions
+    def superEggDrop5(self, K, N):
+
+        #  * Right now, dp[i] represents dp(1, i)
+        dp = list(range(N+1))
+
+        for k in range(2, K+1):
+            # * Now, we will develop dp2[i] = dp(k, i)
+            dp2 = [0]
+            x = 1
+            for n in range(1, N+1):
+                # * Let's find dp2[n] = dp(k, n)
+                # * Increase our optimal x while we can make our answer better.
+                # * Notice max(dp[x-1], dp2[n-x]) > max(dp[x], dp2[n-x-1])
+                # * is simply max(T1(x-1), T2(x-1)) > max(T1(x), T2(x)).
+                while x < n and max(dp[x-1], dp2[n-x]) > max(dp[x], dp2[n-x-1]):
+                    x += 1
+
+                # * The final answer happens at this x.
+                dp2.append(1 + max(dp[x-1], dp2[n-x]))
+
+            dp = dp2
+
+        return dp[-1]    
+
+
+    # * Solution 6
+    # ! Classic Dynamic programming
+    # ! TLE
+    def superEggDropDrop(self, K, N):
+
+        # * classic dp[K+1][N+1]
+        # * initialized with positive Infinity
+        dp = [[float('inf')] * (N+1) for _ in range(K+1)]
+
+        # * fill with base case
+        # * 1) To verify 0 floor, need drop 0 time.
+        # * 2) To verify 1 floor, need drop 1 time.
+        for k in range(1, K+1):
+            dp[k][0] = 0
+            dp[k][1] = 1
+        # * 3) Only 1 egg left, to verify n floor, need drop n times.
+        for n in range(1, N+1):
+            dp[1][n] = n
+
+        for i in range(2, K+1):
+            for j in range(2, N+1):
+                for k in range(1, j+1):
+                    dp[i][j] = min(dp[i][j], 1 + max(dp[i-1][k-1], dp[i][j-k]))
+        
+        return dp[K][N]
+        
+
 
 sol = Solution()
 k1 = 1
 n1 = 2
-r1 = sol.superEggDrop4(k1, n1)
+r1 = sol.superEggDrop5(k1, n1)
 print('ex: {}, res: {}'.format(2, r1))
 
 k1 = 2
 n1 = 6
-r1 = sol.superEggDrop4(k1, n1)
+r1 = sol.superEggDrop5(k1, n1)
 print('ex: {}, res: {}'.format(3, r1))
 
 k1 = 3
 n1 = 14
-r1 = sol.superEggDrop4(k1, n1)
+r1 = sol.superEggDrop5(k1, n1)
 print('ex: {}, res: {}'.format(4, r1))
 
 k1 = 3
 n1 = 25
-r1 = sol.superEggDrop4(k1, n1)
+r1 = sol.superEggDrop5(k1, n1)
 print('ex: {}, res: {}'.format(5, r1))
 
 k1 = 4
 n1 = 2000
-r1 = sol.superEggDrop4(k1, n1)
-print(r1)
+r1 = sol.superEggDrop5(k1, n1)
+print('ex: {}, res: {}'.format(16, r1))
 # %%
