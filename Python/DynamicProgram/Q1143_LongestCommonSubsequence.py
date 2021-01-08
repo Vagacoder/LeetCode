@@ -43,6 +43,7 @@
 class Solution:
 
     # * Solution 1
+    # ! Dynamic Programming
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
         n = len(text1)
         m = len(text2)
@@ -56,18 +57,34 @@ class Solution:
                 else:
                     dp[i][j] = max(dp[i-1][j], dp [i][j-1])
         
-        print(dp)
+        # print(dp)
         return dp[m][n]
 
+
+    # * Solution 2
+    # ! Recursive, Brute Force
+    def longestCommonSubsequence2(self, text1: str, text2: str) -> int:
+        def dp(i:int, j:int):
+            # * base case 
+            if i == -1 or j == -1:
+                return 0
+            
+            if text1[i] == text2[j]:
+                return dp(i-1, j-1) + 1
+            else:
+                return max(dp(i-1, j), dp(i, j-1)) 
+
+        return dp(len(text1)-1, len(text2)-1)
+        
 
 
 sol = Solution()
 t1 = 'abcde'
 t2 = 'ace'
-r1 = sol.longestCommonSubsequence(t1, t2)
+r1 = sol.longestCommonSubsequence2(t1, t2)
 print(r1)
 
 t1 = 'bsbininm'
 t2 = 'jmjkbkjkv'
-r1 = sol.longestCommonSubsequence(t1, t2)
+r1 = sol.longestCommonSubsequence2(t1, t2)
 print(r1)
