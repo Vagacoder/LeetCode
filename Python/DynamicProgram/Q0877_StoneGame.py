@@ -43,6 +43,7 @@
 class Solution:
 
     # * Solution 1
+    # ! passed, but could have potential bug, see below
     def stoneGame(self, piles: list) -> bool:
         n = len(piles)
         dp = [[-1] * n for _ in range(n)]
@@ -63,7 +64,8 @@ class Solution:
                 dp[start][end] = max(piles[start], piles[end])
                 return dp[start][end]
             
-            dp[start][end] = max((piles[start] + helper(start+1, end-1)), (piles[end]) + helper(start+1,end-1))
+            # ! potenital bug, since we pick start (end), we assume opponent pick other side
+            dp[start][end] = max((piles[start] + helper(start+1, end-1)), (piles[end] + helper(start+1,end-1)))
             return dp[start][end]
         
         alexGet = helper(0, n-1)
@@ -73,13 +75,73 @@ class Solution:
         return alexGet > sum(piles) - alexGet
             
 
+    # * Solution 2
+    # ! derived from 1, try to fix bug
+    # ! passed, feel better LOL
+    def stoneGame2(self, piles: list) -> bool:
+        n = len(piles)
+        dp = [[-1] * n for _ in range(n)]
+        
+        def helper(start: int, end: int)-> int:
+            # * read memo
+            if dp[start][end] != -1:
+                return dp[start][end]
+            
+            # * base case
+            if start+1 == end:
+                dp[start][end] = max(piles[start], piles[end])
+                return dp[start][end]
+            
+            # ! fix bug
+            dp[start][end] = max(
+                (piles[start] + max(helper(start+1, end-1), helper(start+2, end))), 
+                (piles[end] + max(helper(start+1,end-1), helper(start,end-2)))
+                )
+            return dp[start][end]
+        
+        alexGet = helper(0, n-1)
+        return alexGet > sum(piles) - alexGet
 
+    
+    # * Solution 3
+    def stoneGame3(self, piles:list) -> bool:
+        n = len(piles)
+
+        # * Initialize dp
+        dp =[[(0,0)] * n for _ in range(n)]
+
+        # * base case
+        for i in range(n):
+            dp[i][i] = (piles[i], 0)
+
+        print(dp)
+
+        for j in range(1, n):
+            for i in range(j-1, -1, -1):
+    
+                # print('i', i)
+                # print('j', j)
+                # print()
+
+                # * first one pick left
+                left = piles[i] + dp[i+1][j][1]
+                # * first one pick right
+                right = piles[j] + dp[i][j-1][1]
+
+                if left > right:
+                    dp[i][j] = (left, dp[i+1][j][0])
+                else:
+                    dp[i][j] = (right, dp[i][j-1][0])
+
+        print(dp)
+                    
+        return dp[0][n-1][0] > dp[0][n-1][1]
 
 sol = Solution()
 a1 = [5, 3, 4, 5]
-r1 = sol.stoneGame(a1)
+r1 = sol.stoneGame3(a1)
 print(r1)
 
-a1 = [5, 3, 4, 5]
-r1 = sol.stoneGame(a1)
+a1 = [3, 7, 2, 3]
+r1 = sol.stoneGame3(a1)
 print(r1)
