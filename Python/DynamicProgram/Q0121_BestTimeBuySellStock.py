@@ -85,10 +85,45 @@ class Solution:
         
         return maxProfit
 
+    # * Solution 4
+    # ! Full dimension DP
+    def maxProfit4(self, prices: list)-> int:
+        n = len(prices)
+        if n == 0:
+            return 0
+        
+        K = 1
+        # * Set 3d dp, n: day #; k: transaction #; [no stock, hold stock]
+        # * all set to not calculated
+        dp = [[[float('-inf'), float('-inf')] for __ in range(K+1)] for _ in range(n)]
+
+        # * Base case
+        # ! this is simple case, Full case see Q123
+        # * For first day, 0 transaction is done: if no stock, profit is 0,
+        # * For first day, 1 transaction is done: if hold stock,  -infinity
+        dp[0][0][0] = 0
+        dp[0][1][1] = -prices[0]
+
+        print(dp)
+        
+        for i in range(1, n):
+            # * actually k only = 1
+            for k in range(1, K+1):
+                print(i,k)
+                # ! note: when buy stock, transaction # k decrease 1; 
+                # !       when sell, k is unchanged
+                dp[i][k][0] = max(dp[i-1][k][0], (dp[i-1][k][1] + prices[i]))
+                dp[i][k][1] = max(dp[i-1][k][1], (dp[i-1][k-1][0] - prices[i]))
+        
+        print(dp)
+        return dp[n-1][K][0]
+
+                
+
 
 sol = Solution()
 a1 = [7, 1, 5, 3, 6, 4]
-r1 = sol.maxProfit3(a1)
+r1 = sol.maxProfit4(a1)
 print('Expected 5', r1)
 
 # %%
