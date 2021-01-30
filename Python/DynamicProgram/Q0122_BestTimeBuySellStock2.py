@@ -51,9 +51,12 @@ class Solution:
         if n == 0:
             return 0
         
+        # * Since k is no limited, we don't need consider k any longer
         dp = [[0, 0] for _ in range(n)]
 
         for i in range(n):
+            # * Base case
+            # * since k is not considered, we only consider base case fo first day
             if i == 0:
                 dp[i][0] = 0
                 dp[i][1] = -prices[i]

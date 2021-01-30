@@ -94,14 +94,18 @@ class Solution:
         
         K = 1
         # * Set 3d dp, n: day #; k: transaction #; [no stock, hold stock]
-        # * all set to not calculated
+        # * all set to -inf (not calculated/impossible)
         dp = [[[float('-inf'), float('-inf')] for __ in range(K+1)] for _ in range(n)]
 
         # * Base case
         # ! this is simple case, Full case see Q123
-        # * For first day, 0 transaction is done: if no stock, profit is 0,
-        # * For first day, 1 transaction is done: if hold stock,  -infinity
-        dp[0][0][0] = 0
+        # * 1) For every day, 0 transaction is done: if no stock, profit is 0,
+        for i in range(n):
+            dp[i][0][0] = 0
+
+        # * 2) For first day, 1 transaction is done: if no stock, profit is 0,
+        # * 2) For first day, 1 transaction is done: if hold stock, must buy with prices[0]
+        dp[0][1][0] = 0
         dp[0][1][1] = -prices[0]
 
         print(dp)
@@ -126,6 +130,9 @@ a1 = [7, 1, 5, 3, 6, 4]
 r1 = sol.maxProfit4(a1)
 print('Expected 5', r1)
 
+a1 = [2,1,2,1,0,1,2]
+r1 = sol.maxProfit4(a1)
+print('Expected 2', r1)
 # %%
 
 # %%

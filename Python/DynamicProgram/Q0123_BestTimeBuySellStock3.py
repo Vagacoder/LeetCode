@@ -104,7 +104,7 @@ class Solution:
 
 
     # * Solution 3
-    # ! Full dimension DP
+    # ! Full dimension DP, More generic form
     def maxProfit3(self, prices: list)-> int:
         n = len(prices)
         if n == 0:
@@ -124,49 +124,47 @@ class Solution:
             dp[i][0][0] = 0
 
         # * 2) For first day:
-        # * 0 transaction is done (already done above, no necessary): 
-        # *     if no stock, profit is 0,
-        # *     if hold stock, impossible (for 0 transaction)
-        # * 1 or more transactions are done: 
-        # *     if no stock, impossible (for first day, with >= 1 transaction done)
+        # * 0 transaction is covered above
+        # * 1 or more transaction is done:
+        # *     if no stock, no profit, it is 0,
         # *     if hold stock, it must buy at first day, profit is -prices[0]
-        dp[0][0][0] = 0
         for k in range(1, K+1):
+            dp[0][k][0] = 0
             dp[0][k][1] = -prices[0]
 
-        print(dp)
+        # print(dp)
         
         for i in range(1, n):
             # * actually k only = 1
             for k in range(1, K+1):
-                print(i,k)
+                # print(i,k)
                 # ! note: when buy stock, transaction # k decrease 1; 
                 # !       when sell, k is unchanged
                 dp[i][k][0] = max(dp[i-1][k][0], (dp[i-1][k][1] + prices[i]))
                 dp[i][k][1] = max(dp[i-1][k][1], (dp[i-1][k-1][0] - prices[i]))
         
-        print(dp)
+        # print(dp)
         return dp[n-1][K][0]
 
 
 sol = Solution()
-# a1 = [3,3,5,0,0,3,1,4]
-# r1 = sol.maxProfit3(a1)
-# print('Expected 6', r1)
+a1 = [3,3,5,0,0,3,1,4]
+r1 = sol.maxProfit3(a1)
+print('Expected 6', r1)
 
-# a1 = [1,2,3,4,5]
-# r1 = sol.maxProfit3(a1)
-# print('Expected 4', r1)
+a1 = [1,2,3,4,5]
+r1 = sol.maxProfit3(a1)
+print('Expected 4', r1)
 
-# a1 = [7,6,4,3,1]
-# r1 = sol.maxProfit3(a1)
-# print('Expected 0', r1)
+a1 = [7,6,4,3,1]
+r1 = sol.maxProfit3(a1)
+print('Expected 0', r1)
 
 a1 = [14,9,10,12,4,8,1,16]
 r1 = sol.maxProfit3(a1)
 print('Expected 19', r1)
 
-r2 = sol.maxProfit1(a1)
-print('Expected 19', r2)
+# r2 = sol.maxProfit1(a1)
+# print('Expected 19', r2)
 
 # %%
