@@ -31,9 +31,11 @@ class Solution:
         dp = [[0,0] for _ in range(n)]
 
         for i in range(n):
+            # * base case 1, first day
             if i == 0:
                 dp[i][0] = 0
                 dp[i][1] = -prices[i]
+            # * base case 2, second day
             elif i == 1:
                 dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i])
                 # ! since i = 1, cannot use i-2

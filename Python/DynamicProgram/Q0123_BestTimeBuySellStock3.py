@@ -135,7 +135,7 @@ class Solution:
         # print(dp)
         
         for i in range(1, n):
-            # * actually k only = 1
+            # * actually k only = 1, 2
             for k in range(1, K+1):
                 # print(i,k)
                 # ! note: when buy stock, transaction # k decrease 1; 
