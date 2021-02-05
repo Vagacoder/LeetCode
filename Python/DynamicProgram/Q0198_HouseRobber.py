@@ -57,6 +57,27 @@ class Solution:
         return dp[n-1]
 
 
+    # * Solution 1.1, Dynamic, from top to bottpm, Optimized
+    def rob1e(self, nums: list) -> int:
+        n = len(nums)
+        if n == 0:
+            return 0
+        if n == 1:
+            return nums[0]
+
+        dp0 = nums[0]
+        dp1 = max(nums[0], nums[1])
+        dp2 = max(dp0, dp1) 
+        # * or dp2 = dp1
+
+        for i in range(2, n):
+            dp2 = max(dp1, dp0 + nums[i])
+            dp0 = dp1
+            dp1 = dp2
+        
+        return dp2
+
+
     # * Solution 2, Recursive, from top to bottom
     # ! Too slow, TLE
     def rob2(self, nums: list) -> int:
