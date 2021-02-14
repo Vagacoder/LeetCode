@@ -88,17 +88,17 @@ class Solution:
         tree = []
         graph = {-1: []}
         index = -1
-        q = [(root, -1)]
+        queue = [(root, -1)]
         
-        while q:
-            node, parent_index = q.pop(0)
+        while queue:
+            node, parent_index = queue.pop(0)
             if node:
                 index += 1
                 tree.append(node.val)
                 graph[index] = []
                 graph[parent_index].append(index)
-                q.append((node.left, index))
-                q.append((node.right, index))
+                queue.append((node.left, index))
+                queue.append((node.right, index))
 
         # represent the maximum start by node i with robbing i
         dp_rob = [0] * (index+1)
