@@ -88,6 +88,7 @@ class Solution:
 
     # * Solution 3
     # ! Dynamic Programm
+    # ! Not working
     def maxA3(self, N:int) -> int:
 
         if N <= 0:
@@ -104,21 +105,42 @@ class Solution:
         dp[1] = (1, 0)
 
         for i in range(2, N):
-            dp[i] = max(
+            dp[i] = (
+                    max(
                         dp[i-1]
+                        ),
+                    max(
+
                         )
+                    )
+
+    # * Solution 4
+    # ! Best sequence must be 2 of below:
+    # ! 1, keep typing A
+    # ! 2, a sequence A, followed with C+A, C+C, C+V, C+V, .....
+    def maxA4(self, N:int)-> int:
+
+        dp = [0] * (N+1)
+        for i in range(1, N+1):
+            # * Type A
+            dp[i] = dp[i-1] + 1
+            if i > 2:
+                for j in range(2, i):
+                    dp[i] = max(dp[i], dp[j-2]*(i-j+1))
+
+        return dp[N]
 
 
 sol = Solution()
 
 a1 = 3
-r1 = sol.maxA2(a1)
+r1 = sol.maxA4(a1)
 print('ex: {}, ar: {}'.format(3, r1))
 
 a1 = 7
-r1 = sol.maxA2(a1)
+r1 = sol.maxA4(a1)
 print('ex: {}, ar: {}'.format(9, r1))
 
 a1 = 11
-r1 = sol.maxA2(a1)
+r1 = sol.maxA4(a1)
 print('ex: {}, ar: {}'.format(27, r1))
